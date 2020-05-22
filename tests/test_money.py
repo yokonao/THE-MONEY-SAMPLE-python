@@ -10,15 +10,22 @@ class TestMoney(unittest.TestCase):
         self.assertAlmostEqual(Money(15, "USD"), five.times(3))
 
     # 足し算のテスト
+    def addition(self, augend, added, expected):
+        augend = Money(augend[0], augend[1])
+        added = Money(added[0], added[1])
+        expected = Money(expected[0], expected[1])
+        sum = augend.add(added)
+        self.assertEqual(sum, expected)
+
     def test_addition(self):
-        sum = Money(5, "USD").add(Money(5, "USD"))
-        self.assertEqual(sum, Money(10, "USD"))
-        sum = Money(5, "CHF").add(Money(5, "CHF"))
-        self.assertEqual(sum, Money(10, "CHF"))
-        sum = Money(5, "USD").add(Money(10, "CHF"))
-        self.assertEqual(sum, Money(10, "USD"))
-        sum = Money(10, "CHF").add(Money(5, "USD"))
-        self.assertEqual(sum, Money(10, "USD"))
+        test_case_list = [
+            ((5, "USD"), (5, "USD"), (10, "USD")),
+            ((5, "CHF"), (5, "CHF"), (10, "CHF")),
+            ((5, "USD"), (10, "CHF"), (10, "USD")),
+            ((10, "CHF"), (5, "USD"), (10, "USD")),
+        ]
+        for test_case in test_case_list:
+            self.addition(test_case[0], test_case[1], test_case[2])
 
     # 通貨のテスト
     def test_currency(self):
